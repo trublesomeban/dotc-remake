@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://cjk5cqs2ujy71"]
+
+[ext_resource type="Script" path="res://scenes/Wraith.gd" id="1_h86be"]
+[ext_resource type="SpriteFrames" uid="uid://bx1st7alf6nfw" path="res://assets/enemies/wraith/wraith.tres" id="1_jjq14"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gf2f0"]
+radius = 8.0
+height = 24.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0ihme"]
+height = 22.0
+
+[node name="RigidBody2D" type="RigidBody2D"]
+collision_layer = 2
+collision_mask = 2
+gravity_scale = 0.0
+sleeping = true
+script = ExtResource("1_h86be")
+
+[node name="WraithCollider" type="CollisionShape2D" parent="."]
+position = Vector2(1, -4)
+shape = SubResource("CapsuleShape2D_gf2f0")
+
+[node name="WraithAnimation" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("1_jjq14")
+animation = &"dash"
+
+[node name="WraithAttack" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="WraithAttackHitbox" type="CollisionShape2D" parent="WraithAttack"]
+position = Vector2(0, -4)
+shape = SubResource("CapsuleShape2D_0ihme")
+debug_color = Color(0.964706, 0.0509804, 0.454902, 0.419608)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="animation_finished" from="WraithAnimation" to="." method="_on_animation_finished"]
+[connection signal="body_entered" from="WraithAttack" to="." method="_on_wraith_attack_body_entered"]

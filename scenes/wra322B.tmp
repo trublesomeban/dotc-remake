@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://cjk5cqs2ujy71"]
+
+[ext_resource type="Script" path="res://scenes/Wraith.gd" id="1_h86be"]
+[ext_resource type="SpriteFrames" uid="uid://bx1st7alf6nfw" path="res://assets/enemies/wraith/wraith.tres" id="1_jjq14"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gf2f0"]
+radius = 8.0
+height = 24.0
+
+[node name="RigidBody2D" type="RigidBody2D"]
+collision_layer = 2
+collision_mask = 2
+gravity_scale = 0.0
+sleeping = true
+script = ExtResource("1_h86be")
+
+[node name="WraithCollider" type="CollisionShape2D" parent="."]
+position = Vector2(1, -4)
+shape = SubResource("CapsuleShape2D_gf2f0")
+
+[node name="WraithAnimation" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("1_jjq14")
+animation = &"scream"

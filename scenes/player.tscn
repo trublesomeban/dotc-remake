@@ -1,0 +1,107 @@
+[gd_scene load_steps=10 format=3 uid="uid://cu2v8sdehobcu"]
+
+[ext_resource type="Script" path="res://scenes/Player.gd" id="1_csgpa"]
+[ext_resource type="FontFile" uid="uid://usu4r4bnjwu0" path="res://assets/fonts/joystix monospace.otf" id="1_wkd7y"]
+[ext_resource type="Texture2D" uid="uid://xthufloxgvl4" path="res://assets/player/player.png" id="2_ddwmw"]
+[ext_resource type="Script" path="res://scenes/PlayerWeapon.gd" id="3_owsc2"]
+[ext_resource type="SpriteFrames" uid="uid://csd73ejvvmnqk" path="res://assets/weapons/staff/staff.tres" id="4_b581q"]
+[ext_resource type="Shape2D" uid="uid://b7bro0rmtyiu" path="res://scenes/player_hitbox.tres" id="5_ct5h6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ip6n7"]
+size = Vector2(10, 15)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4yari"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ddwmw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2xant"]
+size = Vector2(36, 25)
+
+[node name="Player" type="RigidBody2D"]
+z_index = 1
+sleeping = true
+lock_rotation = true
+script = ExtResource("1_csgpa")
+
+[node name="Control" type="Control" parent="."]
+z_index = 12
+layout_mode = 3
+anchors_preset = 0
+offset_left = -17.0
+offset_top = -42.0
+offset_right = 23.0
+offset_bottom = -2.0
+
+[node name="Health" type="RichTextLabel" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -17.0
+offset_right = 218.0
+offset_bottom = 38.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.16, 0.16)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 9
+theme_override_fonts/normal_font = ExtResource("1_wkd7y")
+theme_override_font_sizes/normal_font_size = 36
+text = "100/100"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(-1, -22)
+zoom = Vector2(5.5, 5.5)
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
+
+[node name="PlayerCollider" type="CollisionShape2D" parent="."]
+position = Vector2(0, -7.25)
+shape = SubResource("RectangleShape2D_ip6n7")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 2
+position = Vector2(0, -17)
+scale = Vector2(0.75, 0.75)
+sprite_frames = SubResource("SpriteFrames_4yari")
+
+[node name="Weapon" type="Area2D" parent="."]
+position = Vector2(0, -17)
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("3_owsc2")
+
+[node name="WeaponHitbox" type="CollisionShape2D" parent="Weapon"]
+position = Vector2(5, 13.5)
+shape = SubResource("RectangleShape2D_2xant")
+
+[node name="WeaponAnimation" type="AnimatedSprite2D" parent="Weapon"]
+z_index = 2
+y_sort_enabled = true
+position = Vector2(4, 0)
+scale = Vector2(0.625, 0.625)
+sprite_frames = ExtResource("4_b581q")
+animation = &"slice"
+frame_progress = 0.864348
+
+[node name="PlayerHitbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="PlayerHBCollider" type="CollisionShape2D" parent="PlayerHitbox"]
+position = Vector2(0, -16)
+shape = ExtResource("5_ct5h6")
+
+[connection signal="area_entered" from="Weapon" to="Weapon" method="_on_area_entered"]
+[connection signal="body_entered" from="Weapon" to="Weapon" method="_on_body_entered"]
+[connection signal="animation_finished" from="Weapon/WeaponAnimation" to="Weapon" method="_on_weapon_animation_animation_finished"]

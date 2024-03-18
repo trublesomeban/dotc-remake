@@ -1,0 +1,44 @@
+[gd_scene load_steps=8 format=3 uid="uid://sj06n2i88wth"]
+
+[ext_resource type="NavigationPolygon" uid="uid://bx8wdwabi64y6" path="res://scenes/demo_nav.tres" id="1_eqt6q"]
+[ext_resource type="Script" path="res://scenes/Nav.gd" id="2_dd8am"]
+[ext_resource type="Texture2D" uid="uid://dtkpjuhol4gnt" path="res://asset_source/glych_idle_-1_1.png" id="3_cp8al"]
+[ext_resource type="Script" path="res://TestPathfind.gd" id="3_gb8id"]
+[ext_resource type="Texture2D" uid="uid://nsvm34cwgjmq" path="res://asset_source/glych_idle_-1_2.png" id="4_k2tl0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bdgec"]
+size = Vector2(12, 6)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_w4gmj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_cp8al")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_k2tl0")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="NavMap" type="NavigationRegion2D" parent="."]
+z_index = 112
+navigation_polygon = ExtResource("1_eqt6q")
+navigation_layers = 8
+script = ExtResource("2_dd8am")
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+position = Vector2(817, 790)
+script = ExtResource("3_gb8id")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+position = Vector2(-2, 10)
+shape = SubResource("RectangleShape2D_bdgec")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="RigidBody2D"]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_w4gmj")
